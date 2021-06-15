@@ -118,7 +118,7 @@ async def on_message(message):
 
 	if "retard" in message.content.lower():
 		print(pcmd)
-		await message.channel.send(file=discord.File('whyretard.png'))
+		await message.channel.send(file=discord.File('whyretarded.png'))
 		return
 
 	if (('dough' in message.content.lower() and 'know' in message.content.lower()) or (message.content[:12] == "More like, “" and message.author == client.user)) or (message.content in ["Joe Biden","Joe mama","Catherine Eugenia Finnegan","Who's Joe? Joe mama","Who's Joe? Joe Biden","Who's Joe? Catherine Eugenia Finnegan","Who's dough? Dough mama"] and message.author == client.user):
