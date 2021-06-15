@@ -1,0 +1,4 @@
+discord
+pytz
+zalgo_text
+regex
