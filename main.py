@@ -826,7 +826,7 @@ async def on_message(message):
         
         webhook = None
         for awebhook in webhooks:
-            if awebhook.name == "impersonator":
+            if awebhook.token is not None and awebhook.name == "impersonator":
                 webhook = awebhook
         if webhook is None:
             webhook = await message.channel.create_webhook(name="impersonator")
