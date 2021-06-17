@@ -107,6 +107,8 @@ async def on_message(message):
     except:
         if (str(message.channel.type) == 'private' or str(message.channel.type) == 'group') and message.content == 'C':
             print(pcmd)
+            if message.channel.name == "c-broadcast": #message.author.discriminator == "0000" and 
+                await message.publish()
             await message.add_reaction('\U0001F1E8') # C
             if message.author == client.user:
                 return
@@ -805,9 +807,7 @@ async def on_message(message):
         print(pcmd)
         await message.channel.send(requests.get("https://tophonetics-api.ajlee.repl.co/api", data={"text": message.content[6:]}).text)
 
-    print(message.channel.name)
-    if message.channel.name in ["blaze-it","c-broadcast"]: #message.author.discriminator == "0000" and 
-        print("a")
+    if message.channel.name == "blaze-it": #message.author.discriminator == "0000" and 
         await message.publish()
 
     if "blaze" in message.content.lower():
