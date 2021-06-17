@@ -94,7 +94,7 @@ async def on_message(message):
 
     # C
     try:
-        if message.channel.name.lower() == 'c':
+        if message.channel.name.lower() in ['c','c-broadcast']:
             print(pcmd)
             if message.content == 'C':
                 await message.add_reaction('\U0001F1E8') # C
@@ -824,9 +824,12 @@ async def on_message(message):
         webhooks = await message.channel.webhooks()
         #print(len(webhooks))
         
-        if len(webhooks) < 1:
+        webhook = None
+        for awebhook in webhooks:
+            if awebhook.name == "impersonator":
+                webhook = awebhook
+        if webhook is None:
             webhook = await message.channel.create_webhook(name="impersonator")
-        webhook = webhooks[0]
 
         username = msg[0]
         avatar_url = None
