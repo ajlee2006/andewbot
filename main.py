@@ -97,6 +97,8 @@ async def on_message(message):
         if message.channel.name.lower() in ['c','c-broadcast']:
             print(pcmd)
             if message.content == 'C':
+                if message.channel.name == "c-broadcast": #message.author.discriminator == "0000" and 
+                    await message.publish()
                 await message.add_reaction('\U0001F1E8') # C
             else:
                 await message.add_reaction('\U0001F621') # >:(
@@ -107,8 +109,6 @@ async def on_message(message):
     except:
         if (str(message.channel.type) == 'private' or str(message.channel.type) == 'group') and message.content == 'C':
             print(pcmd)
-            if message.channel.name == "c-broadcast": #message.author.discriminator == "0000" and 
-                await message.publish()
             await message.add_reaction('\U0001F1E8') # C
             if message.author == client.user:
                 return
