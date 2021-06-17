@@ -796,7 +796,7 @@ async def on_message(message):
         print(pcmd)
         await message.channel.send(requests.get("https://tophonetics-api.ajlee.repl.co/api", data={"text": message.content[6:]}).text)
 
-    if message.author.discriminator == "0000" and str(message.channel) in ["blaze-it","c"]:
+    if str(message.channel) in ["blaze-it","c"]: #message.author.discriminator == "0000" and 
         try:
             await message.publish()
         except:
