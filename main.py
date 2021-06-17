@@ -818,7 +818,7 @@ async def on_message(message):
         print(pcmd)
         s = message.content[4:]
         if message.content.lower()[:14] == 'a!impersonate ':
-            s = message.content[8:]
+            s = message.content[14:]
         msg = shlex.split(s)
         #print(msg)
         webhooks = await message.channel.webhooks()
