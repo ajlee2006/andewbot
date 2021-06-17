@@ -814,13 +814,10 @@ async def on_message(message):
         #print(msg)
         webhooks = await message.channel.webhooks()
         #print(len(webhooks))
-
-        webhook = None
-        for awebhook in webhooks:
-            if awebhook.name == "impersonator":
-                webhook = awebhook
-
-        webhook = await message.channel.create_webhook(name="impersonator")
+        
+        if len(webhooks) < 1:
+            webhook = await message.channel.create_webhook(name="impersonator")
+        webhook = webhooks[0]
 
         username = msg[0]
         avatar_url = None
