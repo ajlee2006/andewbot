@@ -50,6 +50,14 @@ async def on_message(message):
     words = message.content.lower().split()
     table = str.maketrans('', '', string.punctuation)
     wwm = [w.translate(table).lower() for w in words]
+    
+    urlregex = re.compile(
+                r'^(?:http|ftp)s?://' # http:// or https://
+                r'(?:(?:[A-Z0-9](?:[A-Z0-9-]{0,61}[A-Z0-9])?\.)+(?:[A-Z]{2,6}\.?|[A-Z0-9-]{2,}\.?)|' #domain...
+                r'localhost|' #localhost...
+                r'\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})' # ...or ip
+                r'(?::\d+)?' # optional port
+                r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
   # some stuff for certain severs only
     tos = '701616317446226020'
@@ -176,7 +184,8 @@ async def on_message(message):
         print(pcmd)
         # • *`a!py <command>`* *(NEW!)* - runs python code that you give
         msg = discord.Embed(title="Hello! I'm AndewBot.", description = '''Here are my main functionalities:
-• **NEW!** `a!mock <text>` - makes mOcKiNg tExT
+        • **NEW!** `a!impersonate [<nickname> <optional avatar image url> <message>] or [<@mention> <message>]` - pretends to be someone else with matching username and profile picture
+• `a!mock <text>` - makes mOcKiNg tExT
 • `a!pol <text>` - converts your text into Poliespellinglish (for more info, visit https://github.com/ajlee2006/poliespellinglish)
 • `a!tb <text>` - Google Translates your text many times to make a really bad translation.
 • automatic chain detection - adds to message chains.
