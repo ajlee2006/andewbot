@@ -186,15 +186,14 @@ async def on_message(message):
         print(pcmd)
         # • *`a!py <command>`* *(NEW!)* - runs python code that you give
         msg = discord.Embed(title="Hello! I'm AndewBot.", description = '''Here are my main functionalities:
-        • **NEW!** `a!impersonate [<nickname> <optional avatar image url> <message>] or [<@mention> <message>]` - pretends to be someone else with matching username and profile picture
+• **[NEW!]** `a!impersonate [<nickname> <optional avatar image url> <message>] or [<@mention> <message>]` - pretends to be someone else with matching username and profile picture
 • `a!mock <text>` - makes mOcKiNg tExT
 • `a!pol <text>` - converts your text into Poliespellinglish (for more info, visit https://github.com/ajlee2006/poliespellinglish)
-• `a!tb <text>` - Google Translates your text many times to make a really bad translation.
+• `a!tb <text>` - Google Translates your text many times to make a really bad translation. (Many issues such as: only translates first sentence, for some reason)
 • automatic chain detection - adds to message chains.
 • whoa - corrects you when you say 'woah'
-• *`a!trans <from> <to> <text>`* - Google Translates your text. Input `<from>` as `detect` for a detect language translation.
-• `a!zh <text>` - converts text to 匚卄工𠘨乇丂乇 乚乇丅丅乇尺丂
-• a counter to <@!503720029456695306> - twice the bots, double the spam!''', colour = 0x7289da)
+• `a!trans <from> <to> <text>` - Google Translates your text. Input `<from>` as `detect` for a detect language translation. (Same issues as `a!tb`)
+• `a!zh <text>` - converts text to 匚卄工𠘨乇丂乇 乚乇丅丅乇尺丂''', colour = 0x7289da)
         await message.channel.send(embed = msg)
         if str(message.guild.id) == absr:
             await message.channel.send("**🚨 UPDATE:** Functions using Google Translate have been fixed, but with great limitations.\n*For a list of all functionalities, visit: https://ajlee2006.github.io/discbot*")
