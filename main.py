@@ -877,6 +877,10 @@ async def on_message(message):
         
     if "pld" in message.content.lower():
         await message.add_reaction('\U0001F4BB')
+        
+    if "google" in message.content.lower():
+        await message.channel.send("Google‽ Microsoft is clearly far superior, with such a fast loading speed and intuitive design! To prevent this perfidy against our supreme shining star Microsoft, we have to ban Google, and we're going to ban you next!")
+        await message.add_reaction('\U0001F621')
 
     # python
     '''
