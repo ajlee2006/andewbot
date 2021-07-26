@@ -870,6 +870,13 @@ async def on_message(message):
 
         if msg[-1] == "delete":
             await message.delete()
+            
+    if "charge" in message.content.lower():
+        await message.add_reaction('\U0001F50C')
+        await message.add_reaction('\u26a1')
+        
+    if "pld" in message.content.lower():
+        await message.add_reaction('\U0001F4BB')
 
     # python
     '''
