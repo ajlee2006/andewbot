@@ -1,12 +1,4 @@
-'''
-while true
-do
-python3 discbot.py
-sleep 1
-done
-'''
-
-import discord, datetime, unicodedata, re, string, pytz, hashlib, requests, random, os, sys, regex, json, shlex
+import discord, datetime, unicodedata, re, string, pytz, hashlib, requests, random, os, sys, regex, json, shlex, asyncio, emoji
 from zalgo_text import zalgo
 from collections import defaultdict
 
@@ -942,4 +934,49 @@ async def on_message_delete(message):
     await message.channel.send('<@{0.author.id}>\'s message was deleted:\n> {0.content}'.format(message))
 '''
 
-client.run(os.environ.get("DISCBOT_TOKEN"))
+
+
+
+
+###########
+# REACTER #
+# REACTER #
+###########
+
+reacter = discord.Client()
+
+def name(user):
+    n = None
+    try:
+        n = user.nick
+    except:
+        n = user.name
+    if n is None:
+        n = user.name
+    return n
+
+@reacter.event
+async def on_ready():
+    print('Logged in as {0.user}'.format(reacter))
+    await reacter.change_presence(status=discord.Status.online, activity=discord.Game("with reactions"))
+
+@reacter.event
+async def on_message(message):
+    content = ' '.join([name(i) for i in message.mentions + message.channel_mentions + message.role_mentions]) + ' ' + message.content
+    for i in re.findall("(?:<?a?:[\\w\\(\\)]+:(?:\\d+>)?)|(?:[🇦-🇿])", emoji.demojize(content)):
+        if len(i) == 1 and ord(i[0]) >= 127462 and ord(i[0]) <= 127487:
+            await message.add_reaction(i)
+        elif i.startswith(":"):
+            await message.add_reaction(emoji.emojize(i))
+        else:
+            await message.add_reaction(i[1:-1])
+
+@reacter.event
+async def on_reaction_add(reaction, user):
+    await reaction.message.add_reaction(reaction.emoji)
+
+
+loop = asyncio.get_event_loop()
+task1 = loop.create_task(client.start(os.environ.get("DISCBOT_TOKEN")))
+task2 = loop.create_task(client.start(os.environ.get("REACTER_TOKEN")))
+loop.run_until_complete(asyncio.gather(task1, task2, loop=loop))
