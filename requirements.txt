@@ -3,3 +3,4 @@ pytz
 zalgo_text
 regex
 requests
+emoji
