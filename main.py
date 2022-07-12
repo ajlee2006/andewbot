@@ -978,5 +978,6 @@ async def on_reaction_add(reaction, user):
 
 loop = asyncio.get_event_loop()
 task1 = loop.create_task(client.start(os.environ.get("DISCBOT_TOKEN")))
-task2 = loop.create_task(client.start(os.environ.get("REACTER_TOKEN")))
-loop.run_until_complete(asyncio.gather(task1, task2, loop=loop))
+task2 = loop.create_task(reacter.start(os.environ.get("REACTER_TOKEN")))
+gathered = asyncio.gather(task1, task2, loop=loop)
+loop.run_until_complete(gathered)
