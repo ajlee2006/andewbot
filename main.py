@@ -1022,7 +1022,7 @@ async def start(message):
 • /greek - converts message to greek code
 • /gl - converts message to greek lookalike
 • /trans - translates message
-_More will be added soon! Be sure to check out the main version on Discord at ajlee2006.github.io/discbot_
+_More will be added soon! (Probably not actually though, I'm not really working on this) Be sure to check out the main version on Discord at ajlee2006.github.io/discbot_
 ''')
 
 @tbot.message_handler(commands=['greek'])
