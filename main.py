@@ -1,6 +1,7 @@
-import discord, datetime, unicodedata, re, string, pytz, hashlib, requests, random, os, sys, regex, json, shlex, asyncio, emoji
+import discord, datetime, unicodedata, re, string, pytz, hashlib, requests, random, os, sys, regex, json, shlex, asyncio, emoji, telebot
 from zalgo_text import zalgo
 from collections import defaultdict
+from telebot.async_telebot import AsyncTeleBot
 
 client = discord.Client()
 
@@ -976,8 +977,287 @@ async def on_reaction_add(reaction, user):
     await reaction.message.add_reaction(reaction.emoji)
 
 
+
+
+
+
+
+############
+# TELEGRAM #
+# TELEGRAM #
+############
+
+tbot = AsyncTeleBot(os.environ.get("TELGBOT_TOKEN"), parse_mode="MARKDOWN")
+
+'''
+help - help message
+greek - convert message to greek code
+gl - convert message to greek lookalike
+say - a platform for bot abuse
+trans - translates message
+diacritic - adds a specified character after each character in a string
+md5 - hashes your message
+zalgo - zalgofies your message
+hypy - converts hanyupinyin to chinese words
+weird - makes weird unicode text
+pron - shows pronunciation or romanisation of word
+'''
+
+@tbot.message_handler(commands=['start'])
+async def start(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    await tbot.reply_to(message, "Hello, I'm AndewBot! Type /help for more info.")
+
+@tbot.message_handler(commands=['help'])
+async def start(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    await tbot.reply_to(message, '''*Hello, I'm an experimental version of AndewBot on Telegram.* Here are some of my functionalities:
+• /help - this help message
+• /greek - converts message to greek code
+• /gl - converts message to greek lookalike
+• /trans - translates message
+_More will be added soon! Be sure to check out the main version on Discord at ajlee2006.github.io/discbot_
+''')
+
+@tbot.message_handler(commands=['greek'])
+async def greek(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title} asdui {0.chat}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    sent = await tbot.reply_to(message, 'Please reply to this message and enter text to be converted to Greek.', reply_markup=telebot.types.ForceReply(selective=True))
+    await tbot.register_for_reply(sent, greek2)
+
+async def greek2(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    s = unicodedata.normalize('NFD', message.text)
+    fin = ''
+    greek = ':ΕΡΤΥΘΙΟΠΑΣΔΦΓΗΞΚΛΖΧΨΩΒΝΜ;ςερτυθιοπασδφγηξκλζχψωβνμς'
+    eng = 'QERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnmW'
+    for i in s:
+        if i in greek:
+            fin += eng[greek.find(i)]
+        elif i in eng:
+            fin += greek[eng.find(i)]
+        else:
+            fin += i
+    fin = unicodedata.normalize('NFC', fin)
+    await tbot.reply_to(message, fin)
+
+@tbot.message_handler(commands=['gl'])
+async def gl(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    sent = await tbot.reply_to(message, 'Please reply to this message and enter text to be converted to Greek lookalike.', reply_markup=telebot.types.ForceReply(selective=True))
+    await tbot.register_for_reply(sent, gl2)
+
+async def gl2(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    s = unicodedata.normalize('NFD', message.text)
+    fin = ''
+    grll = "ERTYUIOPASDFGHJKLZXCVBNMwertyuiopasdfghjklzxcvbnmΕΡΤΥΘΙΟΠΑΣΔΦΓΗΞΚΛΖΧΨΩΒΝΜςερτυθιοπασδφγηξκλζχψωβνμ"
+    eng =  "EPTYOIOHAEAG7HEKAZXWOBNMceptu0ionaodgynEkAZxwwBvuEPTYOIOHAEAG7HEKAZXWOBNMceptu0ionaodgynEkAZxwwBvu"
+    for i in unicodedata.normalize('NFD', s):
+        if i in grll:
+            fin += eng[grll.find(i)]
+        else:
+            fin += i
+    fin = unicodedata.normalize('NFC', fin)
+    await tbot.reply_to(message, fin)
+
+@tbot.message_handler(commands=['restart'])
+async def restt(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    if message.from_user.username == 'ajlee2006':
+        '''with open('rst.txt', 'w') as filetowrite:
+            filetowrite.write("0")
+        while not int(open('rst.txt', 'r').read()):
+            pass'''
+        await tbot.reply_to(message, "no")
+
+@tbot.message_handler(commands=['trans'])
+async def trans(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    sent = await tbot.reply_to(message, 'Please reply to this message and enter: <source language> <destination language> <text to be translated>', reply_markup=telebot.types.ForceReply(selective=True))
+    await tbot.register_for_reply(sent, trans2)
+
+async def trans2(message):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    print(pcmd)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    s = message.text
+    msg = ''
+    translated = ''
+    fullnamelist = ['detect', 'afrikaans', 'albanian', 'amharic', 'arabic', 'armenian', 'azerbaijani', 'basque', 'belarusian', 'bengali', 'bosnian', 'bulgarian', 'catalan', 'cebuano', 'zh', 'chinese', 'chinese-simplified', 'chinese-traditional', 'corsican', 'croatian', 'czech', 'danish', 'dutch', 'english', 'esperanto', 'estonian', 'finnish', 'french', 'frisian', 'galician', 'georgian', 'german', 'greek', 'gujarati', 'haitian-creole', 'hausa', 'hawaiian', 'hebrew', 'hindi', 'hmong', 'hungarian', 'icelandic', 'igbo', 'indonesian', 'irish', 'italian', 'japanese', 'javanese', 'kannada', 'kazakh', 'khmer', 'korean', 'kurdish', 'kyrgyz', 'lao', 'latin', 'latvian', 'lithuanian', 'luxembourgish', 'macedonian', 'malagasy', 'malay', 'malayalam', 'maltese', 'maori', 'marathi', 'mongolian', 'myanmar', 'burmese', 'nepali', 'norwegian', 'nyanja', 'chichewa', 'odia', 'oriya', 'pashto', 'persian', 'polish', 'portuguese', 'punjabi', 'romanian', 'russian', 'samoan', 'scots-gaelic', 'serbian', 'sesotho', 'shona', 'sindhi', 'sinhala', 'sinhalese', 'slovak', 'slovenian', 'somali', 'spanish', 'sundanese', 'swahili', 'swedish', 'tagalog', 'filipino', 'tajik', 'tamil', 'telugu', 'thai', 'turkish', 'ukrainian', 'urdu', 'uyghur', 'uzbek', 'vietnamese', 'welsh', 'xhosa', 'yiddish', 'yoruba', 'zulu']
+    shortformlist = ['', 'af', 'sq', 'am', 'ar', 'hy', 'az', 'eu', 'be', 'bn', 'bs', 'bg', 'ca', 'ceb', 'zh-cn', 'zh-cn', 'zh-cn', 'zh-tw', 'co', 'hr', 'cs', 'da', 'nl', 'en', 'eo', 'et', 'fi', 'fr', 'fy', 'gl', 'ka', 'de', 'el', 'gu', 'ht', 'ha', 'haw', 'he', 'hi', 'hmn', 'hu', 'is', 'ig', 'id', 'ga', 'it', 'ja', 'jw', 'kn', 'kk', 'km', 'ko', 'ku', 'ky', 'lo', 'la', 'lv', 'lt', 'lb', 'mk', 'mg', 'ms', 'ml', 'mt', 'mi', 'mr', 'mn', 'my', 'my', 'ne', 'no', 'ny', 'ny', 'or', 'or', 'ps', 'fa', 'pl', 'pt', 'pa', 'ro', 'ru', 'sm', 'gd', 'sr', 'st', 'sn', 'sd', 'si', 'si', 'sk', 'sl', 'so', 'es', 'su', 'sw', 'sv', 'tl', 'tl', 'tg', 'ta', 'te', 'th', 'tr', 'uk', 'ur', 'ug', 'uz', 'vi', 'cy', 'xh', 'yi', 'yo', 'zu']
+    t = Translator()
+    templist = s.lower().split()
+    one = templist[0]
+    two = templist[1]
+    msg = s.split(' ', 2)[2]
+    try:
+        to = shortformlist[fullnamelist.index(two)]
+    except:
+        try:
+            to = shortformlist[shortformlist.index(two)]
+        except:
+            await tbot.reply_to(message, 'Oops, ' + two + ' isn\'t a (supported) language.\nFor a list of supported languages, visit **https://ajlee2006.github.io/discbot/langlist.html**', parse_mode="markdown")
+            return
+    try:
+        fr = shortformlist[fullnamelist.index(one)]
+    except:
+        try:
+            fr = shortformlist[shortformlist.index(one)]
+        except:
+            await tbot.reply_to(message, 'Oops, ' + one + ' isn\'t a (supported) language.\nFor a list of supported languages, visit **https://ajlee2006.github.io/discbot/langlist.html**', parse_mode="markdown")
+            return
+    if to == '':
+        await tbot.reply_to(message, 'Oops, you have to specify a target language.\nFor a list of supported languages, visit **https://ajlee2006.github.io/discbot/langlist.html**, parse_mode="markdown"')
+        return
+    elif fr == '':
+        await tbot.reply_to(message, t.translate(msg, dest=to).text)
+    else:
+        await tbot.reply_to(message, t.translate(msg, src=fr, dest=to).text)
+
+@tbot.message_handler(func=lambda message: True)
+async def normalmsg(message, parse_mode="markdown"):
+    pcmd = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S") + '\n{0.from_user.first_name} {0.from_user.last_name} (@{0.from_user.username}) just sent "{0.text}" to {0.chat.title}'.format(message)
+    with open('tpcmd.txt', 'w') as filetowrite:
+        filetowrite.write(pcmd)
+    words = message.text.split()
+    table = str.maketrans('', '', string.punctuation)
+    wwm = [w.translate(table).lower() for w in words]
+    
+    if (datetime.datetime.now(pytz.timezone('Etc/GMT-14')).month == 4 and datetime.datetime.now(pytz.timezone('Etc/GMT-14')).day == 1) or (datetime.datetime.now(pytz.timezone('Etc/GMT')).month == 4 and datetime.datetime.now(pytz.timezone('Etc/GMT')).day == 1) or (datetime.datetime.now(pytz.timezone('Etc/GMT+12')).month == 4 and datetime.datetime.now(pytz.timezone('Etc/GMT+12')).day == 1):
+        if 'whoa' in message.text.lower():
+            print(pcmd)
+            await tbot.reply_to(message, '\\*woah')
+        if 'ςηοα' in message.text.lower():
+            print(pcmd)
+            await tbot.reply_to(message, '\\*ςοαη')
+    else:
+        if 'woah' in message.text.lower():
+            print(pcmd)
+            await tbot.reply_to(message, '\\*whoa')
+        if 'ςοαη' in message.text.lower():
+            print(pcmd)
+            await tbot.reply_to(message, '\\*ςηοα')
+        if 'whoa' in message.text.lower():
+            print(pcmd)
+            await tbot.reply_to(message, '✅ you used the right spelling of "whoa"')
+        if 'ςηοα' in message.text.lower():
+            print(pcmd)
+            await tbot.reply_to(message, '✅ υοθ θσεδ τηε ριγητ σπελλινγ οφ "ςηοα"')
+
+    if message.text == 'C':
+        print(pcmd)
+        await tbot.reply_to(message,'C')
+
+    if message.text.lower() == 'unredeemed':
+        print(pcmd)
+        await tbot.reply_to(message,'unredeemed')
+
+    if 'man' in message.text.lower() or 'men' in message.text.lower() or 'male' in message.text.lower() or 'boy' in message.text.lower() or 'mascul' in message.text.lower():
+        print(pcmd)
+        words = message.text.split()
+        table = str.maketrans('', '', string.punctuation)
+        wwm = [w.translate(table).lower() for w in words]
+        wwmf = []
+        njtm = []
+        njtw = []
+        for i in wwm:
+            if 'men' in i and 'man' not in i and 'male' not in i and 'boy' not in i and 'mascul' not in i:
+                j = re.sub(r'(?<!wo)men','women',i)
+                k = re.sub(r'(?<!wo)men','children',i)
+                njtm.append(i)
+                njtw.append((j,k))
+            else:
+                j = re.sub(r'(?<!wo)men','women',i)
+                j = re.sub(r'(?<!wo)man','woman',j)
+                j = re.sub(r'(?<!fe)male','female',j)
+                j = j.replace('boy','girl')
+                j = j.replace('mascul','femin')
+            wwmf.append(j)
+        fin = []
+        for i in range(len(wwm)):
+            if wwm[i] != wwmf[i] and wwm[i] not in ['man','male','boy','manly','masculine','boyish'] and wwm[i] not in fin:
+                if wwm[i] not in njtm:
+                    await tbot.reply_to(message,'When feminists realise it\'s ' + wwm[i] + ' not ' + wwmf[i])
+                else:
+                    await tbot.reply_to(message,'Not just the ' + wwm[i] + ', but the ' + njtw[njtm.index(wwm[i])][0] + ' and the ' + njtw[njtm.index(wwm[i])][1] + ' too!')
+                fin.append(wwm[i])
+
+    if bool(re.search('[\u0900-\u097F]', message.text)) or 'hindi' in message.text.lower():
+        await tbot.reply_to(message,'Speak Hindi – If you don\'t use it, you will lose it!')
+
+    if message.text == '雪花飘飘':
+        await tbot.reply_to(message,'北风啸啸')
+    if message.text.lower() == 'xue hua piao piao':
+        await tbot.reply_to(message,'bei feng xiao xiao')
+    if message.text.lower() == 'xuehuapiaopiao':
+        await tbot.reply_to(message,'beifengxiaoxiao')
+    if message.text.lower() == 'xhpp':
+        await tbot.reply_to(message,'bfxx')
+
+    if "lorem" in wwm:
+        print(pcmd)
+        await tbot.reply_to(message,'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
+
+    if '69' in re.sub(r'<.+>', '', message.text):
+        print(pcmd)
+        await tbot.reply_to(message,'haha 69 funny number lololololz')
+    if '420' in re.sub(r'<.+>', '', message.text):
+        print(pcmd)
+        await tbot.reply_to(message,'lolz 420 smoke weed lmao hahahahahah')
+
+    if 'east' in wwm or 'coast' in wwm:
+        print(pcmd)
+        await tbot.reply_to(message,'For our East Coast residents, the, we also have a plan for the East Coast. We have a East Coast, Singapore, uh we have a together, an East Coast plan. We care at East Coast.')
+
+    if 'dough' in message.text.lower():
+        print(pcmd)
+        await tbot.reply_to(message,'How well **‘dough’** you know yourself?', parse_mode="markdown")
+    if 'eye' in wwm:
+        print(pcmd)
+        await tbot.reply_to(message,'**‘eye’**-dentification', parse_mode="markdown")
+
+    if 'beauty world' in ' '.join(wwm):
+        print(pcmd)
+        await tbot.reply_to(message,'cha cha cha')
+
+    if wwm == ['k']:
+        print(pcmd)
+        await tbot.reply_to(message,'K? K what? The letter before L? The letter after J? Did you know that in JK the K stands for “kidding?” So your reply is “kidding?” or K as in Potassium? Do you need some Special K for breakfast? K as in I can K/O you? Can I knock you out and feed you to hungry sharks? Sharks have a K in it. "K"? Are you kidding me? I spent a decent portion of my life writing all of that and your response to me is "K"? Are you so mentally handicapped that the only letter you can comprehend is "K" - or are you just some f\\*cking asshole who thinks that with such a short response, he can make a statement about how meaningless what was written was? Well, I\'ll have you know that what I wrote was NOT meaningless. Don\'t believe me? I doubt you would, and your response to this will probably be "K" once again. Do I give a f\\*ck? No, does it look like I give even the slightest f\\*ck about a single letter? I bet you took the time to type that one letter too, I bet you sat there and chuckled to yourself for 20 hearty seconds before pressing "send". You\'re so f\\*cking pathetic. I\'m honestly considering directing you to a psychiatrist, but I\'m simply far too nice to do something like that. You, however, will go out of your way to make a fool out of someone by responding to a well-thought-out, intelligent, or humorous statement that probably took longer to write than you can last in bed with a chimpanzee. What do I have to say to you? Absolutely nothing. I couldn\'t be bothered to respond to such a worthless attempt at a response. Do you want "K" on your gravestone? Do you want people to remember you as the asshat who one day decided to respond to someone with a single letter? "Hey, look, everybody! It\'s that "K" guy!" That\'s who you are. You\'re going to be known as the "K" guy. How does it feel? Do you feel happy? Quite honestly, I don\'t care, which is why I\'m not even going to respond to you. Goodbye, and good luck with your future as that guy who said "K".')
+
+
+
+
+
+
 loop = asyncio.get_event_loop()
 task1 = loop.create_task(client.start(os.environ.get("DISCBOT_TOKEN")))
 task2 = loop.create_task(reacter.start(os.environ.get("REACTER_TOKEN")))
-gathered = asyncio.gather(task1, task2, loop=loop)
+task3 = loop.create_task(tbot.polling())
+gathered = asyncio.gather(task1, task2, task3, loop=loop)
 loop.run_until_complete(gathered)
