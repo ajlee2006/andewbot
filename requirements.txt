@@ -4,3 +4,5 @@ zalgo_text
 regex
 requests
 emoji
+pyTelegramBotAPI
+aiohttp
