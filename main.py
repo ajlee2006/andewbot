@@ -1252,12 +1252,22 @@ async def normalmsg(message, parse_mode="markdown"):
 
 
 
+###########################
+# QUIZARIUM NOTIFICATIONS #
+###########################
 
+notifbot = AsyncTeleBot(os.environ.get("NOTIFBOT_TOKEN"), parse_mode="MARKDOWN")
+
+@notifbot.message_handler(func=lambda message: True)
+async def msg(message, parse_mode="markdown"):
+    if (message.text.lower().startswith("/start") or message.text.lower() == "🚩 start game!") and message.chat.id == -1001798845720:
+            await notifbot.send_message(-1001758603345, "New Quizarium game has started in " + message.chat.title)
 
 
 loop = asyncio.get_event_loop()
 task1 = loop.create_task(client.start(os.environ.get("DISCBOT_TOKEN")))
 task2 = loop.create_task(reacter.start(os.environ.get("REACTER_TOKEN")))
 task3 = loop.create_task(tbot.polling())
-gathered = asyncio.gather(task1, task2, task3, loop=loop)
+task4 = loop.create_task(notifbot.polling())
+gathered = asyncio.gather(task1, task2, task3, task4, loop=loop)
 loop.run_until_complete(gathered)
